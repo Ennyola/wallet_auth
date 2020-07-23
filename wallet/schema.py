@@ -2,6 +2,7 @@ import graphene
 import graphql_jwt
 from graphene_django import DjangoObjectType
 from django.contrib.auth.models import User
+from .models import Transacton, UserProfile, Accounts,Funds
 
 class UserType(DjangoObjectType):
     class Meta:
