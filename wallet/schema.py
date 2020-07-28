@@ -3,11 +3,17 @@ import graphql_jwt
 from graphene_django import DjangoObjectType
 from django.contrib.auth.models import User
 from .models import Transacton, UserProfile, Accounts,Funds
+# from .views import fund_wallet
 
 class UserType(DjangoObjectType):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'email']
+
+class FundWalletType(DjangoObjectType):
+    class Meta:
+        model = Funds
+        fields = ['current_balance', 'previous_balance', 'money_added']
 
 
 class CreateUser(graphene.Mutation):
@@ -25,15 +31,38 @@ class CreateUser(graphene.Mutation):
         if User.objects.filter(email = email ).exists():
             raise Exception("Email already exists")
         else:
-            user = User(first_name = first_name, last_name = last_name, email = email, username = " ")
+            user = User(first_name = first_name, last_name = last_name, email = email, username = email)
             user.set_password(password)
             user.save()
         return CreateUser(user = user)
 
+
+class Fund_Wallet(graphene.Mutation):
+      save_money = graphene.Field(FundWalletType)
+
+      class Arguments:
+          amount = graphene.String(required = True)
+          email = graphene.String(required = True)
+
+      def mutate(self, info, amount, email):
+          amount = int(amount)
+          user = User.objects.get(email = email)
+          funds, created = Funds.objects.get_or_create(user = user)
+          funds.previous_balance = funds.current_balance
+          funds.current_balance  = funds.current_balance + amount
+          funds.money_added = amount
+          funds.save()
+          return Fund_Wallet(save_money = funds)
+          
+
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
+    fund_Wallet = Fund_Wallet.Field()
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
+
+          
 
 class Query:
     user = graphene.Field(UserType)

@@ -1,0 +1,21 @@
+<!DOCTYPE html> {% load paystack %}
+
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>
+        My form
+    </h1>
+    <form action="">
+        <input type="email" name="email" id="email">
+        <input type="number">
+        <input type="submit">
+        {% paystack_button amount=3000 email="j@example.com" %}
+    </form>
+</body>
+
+</html>

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'paystack',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,6 @@ GRAPHENE = {
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ],
 }
+
+PAYSTACK_PUBLIC_KEY = 'pk_test_78d9cf26ee96f7b50fddb3f5353344f4e44f9226'
+PAYSTACK_SECRET_KEY = 'sk_test_263c2794f9822d0dd635f96923ee01fc7a539738'

@@ -12,8 +12,8 @@ class UserProfile(models.Model):
 
 class Funds(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    current_blanace = models.IntegerField(default= 0 )
-    previous_blanace = models.IntegerField(default= 0 )
+    current_balance = models.IntegerField(default= 0 )
+    previous_balance = models.IntegerField(default= 0 )
     money_added = models.IntegerField(default = 0)
     money_removed = models.IntegerField(default= 0)
 
@@ -21,7 +21,7 @@ class Transacton(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     money_saving = models.IntegerField(default=0)
     money_spending = models.IntegerField(default= 0)
-    time_of_transactiob = models.DateTimeField(timezone.now)
+    time_of_transaction = models.DateTimeField(timezone.now)
 
 class Accounts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
