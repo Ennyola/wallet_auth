@@ -23,9 +23,7 @@ from wallet import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('graphiql/', jwt_cookie(GraphQLView.as_view(graphiql=True, schema=schema))),
+    path('graphiql/', csrf_exempt(jwt_cookie(GraphQLView.as_view(graphiql=True, schema=schema)))),
     path('wallet/', include(urls)),
-    path('paystack/', include(('paystack.urls','paystack'),namespace='paystack')),
-
-    
+    path('paystack/', include(('paystack.urls','paystack'),namespace='paystack'))
 ]
