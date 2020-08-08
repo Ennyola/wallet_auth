@@ -47,11 +47,13 @@ class Fund_Wallet(graphene.Mutation):
       def mutate(self, info, amount, email):
           amount = int(amount)
           user = User.objects.get(email = email)
-          funds, created = Funds.objects.get_or_create(user = user)
+          funds, funds_created = Funds.objects.get_or_create(user = user)
+          transacton =  Transacton(user = user, money_saving = amount)
           funds.previous_balance = funds.current_balance
           funds.current_balance  = funds.current_balance + amount
           funds.money_added = amount
           funds.save()
+          transacton.save()
           return Fund_Wallet(save_money = funds)
           
 
@@ -70,5 +72,5 @@ class Query:
     def resolve_user(self, info, **kwargs):
         user = info.context.user
         if not user.is_authenticated:
-            raise Exception('Authentication credentials were not provided')
+            raise Exception('User not logged in')
         return user
