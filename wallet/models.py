@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils import timezone
+from datetime import datetime
 
 # Create your models here.
 
@@ -24,7 +25,7 @@ class Transacton(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     money_saving = models.IntegerField(default=0)
     money_spending = models.IntegerField(default= 0)
-    time_of_transaction = models.DateTimeField(default = timezone.now)
+    time_of_transaction = models.DateTimeField(default = datetime.now())
 
     def __str__(self):
         return self.user.email

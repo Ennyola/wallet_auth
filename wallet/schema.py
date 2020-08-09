@@ -13,7 +13,12 @@ class UserType(DjangoObjectType):
 class FundWalletType(DjangoObjectType):
     class Meta:
         model = Funds
-        fields = ['current_balance', 'previous_balance', 'money_added']
+        fields = ['current_balance', 'previous_balance', 'money_added', 'user']
+
+class TransactionType(DjangoObjectType):
+    class Meta:
+        model = Transacton
+        fields = '__all__'
 
 
 class CreateUser(graphene.Mutation):
@@ -68,9 +73,26 @@ class Mutation(graphene.ObjectType):
 
 class Query:
     user = graphene.Field(UserType)
+    funds = graphene.Field(FundWalletType, user = graphene.String(required = True))
+    transactions = graphene.List(TransactionType, user = graphene.String(required = True))
 
     def resolve_user(self, info, **kwargs):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception('User not logged in')
         return user
+    def resolve_funds(self, info, user):
+        user = User.objects.get(email = user)
+        funds = Funds.objects.get(user = user)
+        return funds
+    def resolve_transactions(self, info, user):
+        user = User.objects.get(email = user)
+        print(user)
+        transactions = Transacton.objects.filter(user = user)
+        return transactions
+
+    
+
+    
+
+        
