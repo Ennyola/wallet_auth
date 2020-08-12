@@ -13,7 +13,7 @@ class UserType(DjangoObjectType):
 class FundWalletType(DjangoObjectType):
     class Meta:
         model = Funds
-        fields = ['current_balance', 'previous_balance', 'money_added', 'user']
+        fields = '__all__'
 
 class TransactionType(DjangoObjectType):
     class Meta:
@@ -47,11 +47,11 @@ class Fund_Wallet(graphene.Mutation):
 
       class Arguments:
           amount = graphene.String(required = True)
-          email = graphene.String(required = True)
+          
 
-      def mutate(self, info, amount, email):
+      def mutate(self, info, amount):
           amount = int(amount)
-          user = User.objects.get(email = email)
+          user = info.context.user
           funds, funds_created = Funds.objects.get_or_create(user = user)
           transacton =  Transacton(user = user, money_saving = amount)
           funds.previous_balance = funds.current_balance
@@ -73,21 +73,24 @@ class Mutation(graphene.ObjectType):
 
 class Query:
     user = graphene.Field(UserType)
-    funds = graphene.Field(FundWalletType, user = graphene.String(required = True))
-    transactions = graphene.List(TransactionType, user = graphene.String(required = True))
+    funds = graphene.Field(FundWalletType)
+    transactions = graphene.List(TransactionType)
 
     def resolve_user(self, info, **kwargs):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception('User not logged in')
         return user
-    def resolve_funds(self, info, user):
-        user = User.objects.get(email = user)
+    def resolve_funds(self, info, **kwargs):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception('No currently Logged in User')
         funds = Funds.objects.get(user = user)
         return funds
-    def resolve_transactions(self, info, user):
-        user = User.objects.get(email = user)
-        print(user)
+    def resolve_transactions(self, info, **kwargs):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception('No currently Logged in User')
         transactions = Transacton.objects.filter(user = user)
         return transactions
 
