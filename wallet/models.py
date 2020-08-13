@@ -13,18 +13,18 @@ class UserProfile(models.Model):
 
 class Funds(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    current_balance = models.IntegerField(default= 0 )
-    previous_balance = models.IntegerField(default= 0 )
-    money_added = models.IntegerField(default = 0)
-    money_removed = models.IntegerField(default= 0)
+    current_balance = models.FloatField(default= 0 )
+    previous_balance = models.FloatField(default= 0 )
+    money_added = models.FloatField(default = 0)
+    money_removed = models.FloatField(default= 0)
 
     def __str__(self):
         return self.user.email
 
 class Transacton(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    money_saving = models.IntegerField(default=0)
-    money_spending = models.IntegerField(default= 0)
+    money_saving = models.FloatField(default=0)
+    money_spending = models.FloatField(default= 0)
     time_of_transaction = models.DateTimeField(default = datetime.now())
 
     def __str__(self):

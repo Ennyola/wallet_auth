@@ -50,7 +50,7 @@ class Fund_Wallet(graphene.Mutation):
           
 
       def mutate(self, info, amount):
-          amount = int(amount)
+          amount = float(amount)
           user = info.context.user
           funds, funds_created = Funds.objects.get_or_create(user = user)
           transacton =  Transacton(user = user, money_saving = amount)
