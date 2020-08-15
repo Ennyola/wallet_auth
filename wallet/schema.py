@@ -91,7 +91,7 @@ class Query:
         user = info.context.user
         if not user.is_authenticated:
             raise Exception('No currently Logged in User')
-        transactions = Transacton.objects.filter(user = user)
+        transactions = Transacton.objects.filter(user = user).order_by('-id')
         return transactions
 
     
