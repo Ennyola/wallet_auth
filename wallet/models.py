@@ -25,7 +25,7 @@ class Transacton(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     money_saving = models.FloatField(default=0.00)
     money_spending = models.FloatField(default= 0.00)
-    time_of_transaction = models.DateTimeField(default = datetime.now())
+    time_of_transaction = models.DateTimeField(default = datetime.now().isoformat())
 
     def __str__(self):
         return self.user.email
