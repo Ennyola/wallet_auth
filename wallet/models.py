@@ -21,7 +21,7 @@ class Funds(models.Model):
     def __str__(self):
         return self.user.email
 
-class Transacton(models.Model):
+class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     money_saving = models.FloatField(default=0.00)
     money_spending = models.FloatField(default= 0.00)

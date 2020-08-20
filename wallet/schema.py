@@ -2,7 +2,8 @@ import graphene
 import graphql_jwt
 from graphene_django import DjangoObjectType
 from django.contrib.auth.models import User
-from .models import Transacton, UserProfile, Accounts,Funds
+from .models import Transaction, UserProfile, Accounts,Funds
+import datetime
 # from .views import fund_wallet
 
 class UserType(DjangoObjectType):
@@ -17,7 +18,7 @@ class FundWalletType(DjangoObjectType):
 
 class TransactionType(DjangoObjectType):
     class Meta:
-        model = Transacton
+        model = Transaction
         fields = '__all__'
 
 
@@ -47,18 +48,21 @@ class Fund_Wallet(graphene.Mutation):
 
       class Arguments:
           amount = graphene.String(required = True)
+          time_of_transacion = graphene.String(required = True)
           
 
-      def mutate(self, info, amount):
+      def mutate(self, info, amount, time_of_transacion):
           amount = float(amount)
           user = info.context.user
           funds, funds_created = Funds.objects.get_or_create(user = user)
-          transacton =  Transacton(user = user, money_saving = amount)
+          date = time_of_transaction.split(',')[0]
+          day, month, year =int(date.split('/')[0]), int(date.split('/')[1]), int(date.split('/')[2])
+          transaction =  Transaction(user = user, money_saving = amount)
           funds.previous_balance = funds.current_balance
           funds.current_balance  = funds.current_balance + amount
           funds.money_added = amount
           funds.save()
-          transacton.save()
+          transaction.save()
           return Fund_Wallet(save_money = funds)
           
 
@@ -91,7 +95,7 @@ class Query:
         user = info.context.user
         if not user.is_authenticated:
             raise Exception('No currently Logged in User')
-        transactions = Transacton.objects.filter(user = user).order_by('-id')
+        transactions = Transaction.objects.filter(user = user).order_by('-id')
         return transactions
 
     
