@@ -3,7 +3,8 @@ import graphql_jwt
 from graphene_django import DjangoObjectType
 from django.contrib.auth.models import User
 from .models import Transaction, UserProfile, Accounts,Funds
-import datetime
+from datetime import datetime
+import pytz
 # from .views import fund_wallet
 
 class UserType(DjangoObjectType):
@@ -48,16 +49,19 @@ class Fund_Wallet(graphene.Mutation):
 
       class Arguments:
           amount = graphene.String(required = True)
-          time_of_transacion = graphene.String(required = True)
+          time_of_transaction = graphene.String(required = True)
           
 
-      def mutate(self, info, amount, time_of_transacion):
+      def mutate(self, info, amount, time_of_transaction):
           amount = float(amount)
           user = info.context.user
           funds, funds_created = Funds.objects.get_or_create(user = user)
           date = time_of_transaction.split(',')[0]
-          day, month, year =int(date.split('/')[0]), int(date.split('/')[1]), int(date.split('/')[2])
-          transaction =  Transaction(user = user, money_saving = amount)
+          time = time_of_transaction.split(',')[1].split(' ')[0]
+          month,day, year =int(date.split('/')[0]), int(date.split('/')[1]), int(date.split('/')[2])
+          hour, minute, second = int(time.split(':')[0]), int(time.split(':')[1]), int(time.split(':')[2])
+          d = datetime(year, month, day, hour, minute,second, tzinfo=pytz.UTC)
+          transaction =  Transaction(user = user, money_saving = amount, time_of_transaction = d)
           funds.previous_balance = funds.current_balance
           funds.current_balance  = funds.current_balance + amount
           funds.money_added = amount
