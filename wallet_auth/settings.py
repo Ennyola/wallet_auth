@@ -139,10 +139,14 @@ GRAPHENE = {
     ],
 }
 
-PAYSTACK_PUBLIC_KEY = 'pk_test_78d9cf26ee96f7b50fddb3f5353344f4e44f9226'
-PAYSTACK_SECRET_KEY = 'sk_test_263c2794f9822d0dd635f96923ee01fc7a539738'
-
 CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3000',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://localhost:3001',
+
 ]
+
+# GRAPHQL_JWT = {
+#     'JWT_VERIFY_EXPIRATION': True,
+#     'JWT_EXPIRATION_DELTA': timedelta(minutes=10),
+# }
