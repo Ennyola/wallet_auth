@@ -2,7 +2,7 @@ import graphene
 import graphql_jwt
 from graphene_django import DjangoObjectType
 from django.contrib.auth.models import User
-from .models import Transaction, UserProfile, Accounts,Funds
+from .models import Transaction, Accounts,Funds
 from datetime import datetime
 import pytz
 # from .views import fund_wallet
@@ -22,10 +22,10 @@ class TransactionType(DjangoObjectType):
         model = Transaction
         fields = '__all__'
 
-class UserProfileTyoe(DjangoObjectType):
-    class Meta:
-        model = UserProfile
-        fields = ["verified", "user"]
+# class UserProfileTyoe(DjangoObjectType):
+#     class Meta:
+#         model = UserProfile
+#         fields = ["verified", "user"]
 
 
 class CreateUser(graphene.Mutation):
@@ -45,6 +45,7 @@ class CreateUser(graphene.Mutation):
             user = User(email = email, username = alias)
             user.set_password(password)
             user.save()
+            funds = Funds.objects.create(user=user)
         return CreateUser(user = user)
 
 
