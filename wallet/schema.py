@@ -22,6 +22,11 @@ class TransactionType(DjangoObjectType):
         model = Transaction
         fields = '__all__'
 
+class UserProfileTyoe(DjangoObjectType):
+    class Meta:
+        model = UserProfile
+        fields = ["verified", "user"]
+
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -92,6 +97,8 @@ class PayAmount(graphene.Mutation):
         funds.save()
         transaction.save()
         return PayAmount(spend_money = funds)
+
+
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()

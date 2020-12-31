@@ -8,7 +8,11 @@ from datetime import datetime
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    verified = models.BooleanField(default=False)
     avatar = models.ImageField()
+
+    def __repr__(self):
+        return self.user
 
 
 class Funds(models.Model):
@@ -19,7 +23,7 @@ class Funds(models.Model):
     money_removed = models.FloatField(default= 0.00)
 
     def __str__(self):
-        return self.user.email
+        return self.user
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,7 +32,7 @@ class Transaction(models.Model):
     time_of_transaction = models.DateTimeField(default = datetime.now().isoformat())
 
     def __str__(self):
-        return self.user.email
+        return self.user
 
 class Accounts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
