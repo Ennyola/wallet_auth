@@ -148,10 +148,4 @@ CORS_ORIGIN_WHITELIST = [
 
 ]
 
-
-# GRAPHQL_JWT = {
-#     'JWT_VERIFY_EXPIRATION': True,
-#     'JWT_EXPIRATION_DELTA': timedelta(minutes=10),
-# }
-
 django_heroku.settings(locals())
