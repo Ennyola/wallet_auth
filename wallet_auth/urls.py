@@ -24,6 +24,6 @@ from wallet import views as walletView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('graphiql/', csrf_exempt(jwt_cookie(GraphQLView.as_view(graphiql=True, schema=schema)))),
+    path('graphiql/', csrf_exempt(jwt_cookie(GraphQLView.as_view(schema=schema)))),
     path('wallet/', include(urls)),
 ]
