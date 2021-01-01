@@ -42,7 +42,7 @@ class CreateUser(graphene.Mutation):
         if User.objects.filter(email = email ).exists():
             raise Exception("Email already exists")
         elif User.objects.filter(username = alias ).exists():
-            raise Exception("Username already exists")
+            raise Exception("Alias already taken")
         else:
             user = User(email = email, username = alias)
             user.set_password(password)
